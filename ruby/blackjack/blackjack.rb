@@ -49,6 +49,38 @@ class Hand
   def initialize
     @cards = []
   end
+
+  def total
+    @cards.map{|card| card[:value]}.reduce(:+)
+  end
+end
+
+class Player
+  attr_accessor :hand
+
+  def initialize
+    @hand = Hand.new
+  end
+
+  def bust
+    if self.hand.total > 21
+      true
+    end
+  end
+
+  def blackjack
+    if self.hand.total == 21
+      true
+    end
+  end
+end
+
+class Dealer
+  attr_accessor :hand
+
+  def initialize
+    @hand = Hand.new
+  end
 end
 
 require 'test/unit'
@@ -81,11 +113,54 @@ class DeckTest < Test::Unit::TestCase
   
   def test_dealt_card_should_not_be_included_in_playable_cards
     card = @deck.deal_card
-    assert(@deck.playable_cards.include?(card))
+    #given that deal_card returns the card that was dealt, this test should assert that the playable cards does NOT contain the card. "!" added to test.
+    assert(!@deck.playable_cards.include?(card))
   end
 
   def test_shuffled_deck_has_52_playable_cards
     @deck.shuffle
     assert_equal @deck.playable_cards.size, 52
+  end
+end
+
+class HandTest < Test::Unit::TestCase
+  def setup
+    @deck = Deck.new
+    @hand = Hand.new
+  end
+
+  def test_initial_hand_has_two_cards
+    2.times do
+      @hand.cards << @deck.deal_card
+    end
+    assert_equal @hand.cards.length, 2
+  end
+end
+
+class PlayerTest < Test::Unit::TestCase
+  def setup
+    @player = Player.new
+    @deck = Deck.new
+  end
+
+  def test_player_initial_hand_has_two_cards
+    2.times do
+      @player.hand.cards << @deck.deal_card
+    end
+    assert_equal @player.hand.cards.length, 2
+  end
+end
+
+class DealerTest < Test::Unit::TestCase
+  def setup
+    @dealer = Dealer.new
+    @deck = Deck.new
+  end
+
+  def test_dealer_initial_hand_has_two_cards
+    2.times do
+      @dealer.hand.cards << @deck.deal_card
+    end
+    assert_equal @dealer.hand.cards.length, 2
   end
 end
