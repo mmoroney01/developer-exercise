@@ -4,5 +4,8 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import Quotes from './Quotes'
+import 'bootstrap/dist/css/bootstrap.min.css'
+
+ReactDOM.render(<Quotes />, document.getElementById('root'));
 registerServiceWorker();
