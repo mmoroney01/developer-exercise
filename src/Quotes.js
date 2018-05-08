@@ -7,7 +7,7 @@ class Quotes extends React.Component {
     this.state = {
       quotes: [],
       currentPage: 1,
-      quotesPerPage: 15
+      quotesPerPage: 15,
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -24,10 +24,11 @@ class Quotes extends React.Component {
         return results.json();
       }).then(data => {
       this.setState({quotes: data});
-      })
+    })
   }
 
   render() {
+
     const { quotes, currentPage, quotesPerPage } = this.state;
 
     const firstQuoteOfNextPage = (currentPage * quotesPerPage + 1);
@@ -38,13 +39,12 @@ class Quotes extends React.Component {
 
     const renderQuotes = currentQuotesOnPage.map((quote, index) => {
         return (
-          <tr key={index} >
+          <tr key={index}>
             <td>{quote.source}</td>
             <td>{quote.context}</td>
             <td>{quote.quote}</td>
             <td>{quote.theme}</td>
           </tr>
-
         );
       });
 
@@ -65,7 +65,7 @@ class Quotes extends React.Component {
         </li>
         );
     });
-
+ 
     return (
     	<div>
 	      <table className="table table-striped table-dark"  style={{"width":"100%"}}>
